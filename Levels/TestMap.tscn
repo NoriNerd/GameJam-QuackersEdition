@@ -1,0 +1,114 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Scripts/DuckMovement.gd" type="Script" id=1]
+[ext_resource path="res://Art/duck_idle.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 4, 0, 22, 32 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 36, 0, 22, 32 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 68, 0, 22, 32 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 100, 0, 22, 32 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 132, 0, 22, 32 )
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "left",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "right",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=2]
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 500, 9 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 500, 9 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 500, 9 )
+
+[node name="TestMap" type="Node"]
+
+[node name="DuckPlayer" type="Area2D" parent="."]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="DuckPlayer"]
+frames = SubResource( 1 )
+animation = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DuckPlayer"]
+shape = SubResource( 2 )
+
+[node name="StateMachine" type="Node" parent="DuckPlayer"]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="DuckPlayer"]
+remote_path = NodePath("../../Camera2D")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+limit_left = -500
+limit_top = -500
+limit_right = 500
+limit_bottom = 500
+editor_draw_limits = true
+
+[node name="MapBoundaries" type="StaticBody2D" parent="."]
+position = Vector2( 1, -498 )
+
+[node name="Top" type="CollisionShape2D" parent="MapBoundaries"]
+position = Vector2( 0, -1 )
+shape = SubResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Left" type="CollisionShape2D" parent="MapBoundaries"]
+position = Vector2( -500, 500 )
+rotation = 1.5708
+shape = SubResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Right" type="CollisionShape2D" parent="MapBoundaries"]
+position = Vector2( 500, 500 )
+rotation = 1.5708
+shape = SubResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Bottom" type="CollisionShape2D" parent="MapBoundaries"]
+position = Vector2( 0, 999 )
+shape = SubResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
