@@ -53,7 +53,7 @@ func _process(delta):
 			$AnimatedSprite.animation = "walk_horizontal"
 			$AnimatedSprite.flip_h = velocity.x < 0
 		elif velocity.y != 0:
-			if velocity.y > 0:
+			if velocity.y < 0:
 				$AnimatedSprite.animation = "up"
 			else:
 				$AnimatedSprite.animation = "down"

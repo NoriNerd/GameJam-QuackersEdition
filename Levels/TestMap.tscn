@@ -1,56 +1,9 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Scripts/DuckMovement.gd" type="Script" id=1]
-[ext_resource path="res://Art/duck_idle.png" type="Texture" id=2]
-
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 2 )
-region = Rect2( 4, 0, 22, 32 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 2 )
-region = Rect2( 36, 0, 22, 32 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 2 )
-region = Rect2( 68, 0, 22, 32 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 2 )
-region = Rect2( 100, 0, 22, 32 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 2 )
-region = Rect2( 132, 0, 22, 32 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 2 )
-region = Rect2( 4, 0, 22, 32 )
-
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [  ],
-"loop": true,
-"name": "down",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
-"loop": true,
-"name": "idle",
-"speed": 5.0
-}, {
-"frames": [  ],
-"loop": true,
-"name": "up",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 8 ) ],
-"loop": true,
-"name": "walk_horizontal",
-"speed": 5.0
-} ]
-
-[sub_resource type="CapsuleShape2D" id=2]
+[ext_resource path="res://Characters/DuckPlayer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Art/duck_walk.png" type="Texture" id=3]
+[ext_resource path="res://ObjectScenes/Interactable.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ObjectScenes/DialoguePlayer.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 500, 9 )
@@ -63,37 +16,17 @@ extents = Vector2( 500, 9 )
 
 [node name="TestMap" type="Node"]
 
-[node name="DuckPlayer" type="Area2D" parent="."]
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="AnimatedSprite" type="AnimatedSprite" parent="DuckPlayer"]
-frames = SubResource( 1 )
-animation = "idle"
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DuckPlayer"]
-shape = SubResource( 2 )
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="DuckPlayer"]
-remote_path = NodePath("../../Camera2D")
-
 [node name="MapBoundaries" type="StaticBody2D" parent="."]
-position = Vector2( 1, -498 )
 
 [node name="Top" type="CollisionShape2D" parent="MapBoundaries"]
-position = Vector2( 0, -1 )
+position = Vector2( 0, -500 )
 shape = SubResource( 11 )
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Left" type="CollisionShape2D" parent="MapBoundaries"]
-position = Vector2( -500, 500 )
+position = Vector2( -500, 0 )
 rotation = 1.5708
 shape = SubResource( 9 )
 __meta__ = {
@@ -101,7 +34,7 @@ __meta__ = {
 }
 
 [node name="Right" type="CollisionShape2D" parent="MapBoundaries"]
-position = Vector2( 500, 500 )
+position = Vector2( 500, 0 )
 rotation = 1.5708
 shape = SubResource( 10 )
 __meta__ = {
@@ -109,7 +42,7 @@ __meta__ = {
 }
 
 [node name="Bottom" type="CollisionShape2D" parent="MapBoundaries"]
-position = Vector2( 0, 999 )
+position = Vector2( 0, 500 )
 shape = SubResource( 11 )
 __meta__ = {
 "_edit_lock_": true
@@ -117,3 +50,36 @@ __meta__ = {
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+zoom = Vector2( 0.5, 0.5 )
+limit_left = -500
+limit_top = -500
+limit_right = 500
+limit_bottom = 500
+editor_draw_limits = true
+
+[node name="Interactable" parent="." instance=ExtResource( 6 )]
+
+[node name="DialogueArea" parent="Interactable" index="0"]
+position = Vector2( 100, 0 )
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" parent="Interactable/DialogueArea" index="0"]
+position = Vector2( 4, 2 )
+
+[node name="Sprite" type="Sprite" parent="Interactable/DialogueArea/CollisionShape2D" index="0"]
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DialoguePlayer" parent="." instance=ExtResource( 7 )]
+follow_viewport_enable = true
+scene_text_file = "res://JsonDialogue/DialogueTest.json"
+
+[node name="TileMap" type="TileMap" parent="."]
+format = 1
+
+[node name="DuckPlayer" parent="." instance=ExtResource( 1 )]
+
+[editable path="Interactable"]
