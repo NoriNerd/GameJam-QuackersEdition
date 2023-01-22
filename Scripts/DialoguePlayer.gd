@@ -2,12 +2,15 @@ extends CanvasLayer
 
 #Put in JSON File
 export (String, FILE, "*json") var scene_text_file
+export var scroll_speed = 0.05
 
 
 var scene_text = {} #Dictionary of all text needed in a scene
 var selected_text = [] #Text currently used in player
+var line_text = ""
 var in_progress = false #Is player on
 var typing = false
+var skip = false
 
 #UI Refs
 onready var background = $Background
@@ -31,19 +34,21 @@ func load_scene_text():
 func show_text():
 	typing = true
 	
-	var line_text = selected_text.pop_front() #Takes first item in array and removes it from array
+	line_text = selected_text.pop_front() #Takes first item in array and removes it from array
 	var current_text = ""
 	var name_break = line_text.find(":")
 	
 	name_text.text = line_text.substr(0, name_break)
 	line_text = line_text.substr(name_break + 1,-1)
 	for i in range(len(line_text)):
+		if skip:
+			break
 		current_text += line_text[i]
 		dialogue_text.text = current_text
-		yield(get_tree().create_timer(0.05), "timeout")
+		yield(get_tree().create_timer(scroll_speed), "timeout")
 	
 	typing = false
-
+	skip = false
 
 	
 func next_line():
@@ -51,6 +56,12 @@ func next_line():
 		show_text()
 	else:
 		finish()
+
+func skip_line():
+	skip = true
+	dialogue_text.text = line_text
+	
+	
 
 func finish():
 	dialogue_text.text = ""
@@ -63,6 +74,8 @@ func finish():
 func on_display_dialogue(text_key):
 	if in_progress and not typing:
 		next_line() #Progress dialogue
+	elif typing:
+		skip_line()
 	elif not in_progress:
 		#get_tree().paused = true #Pause scene tree loading
 		background.visible = true
