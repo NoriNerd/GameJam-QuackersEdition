@@ -1,0 +1,19 @@
+{
+    
+    "ItemKey": [
+        "NAMEHERE:This is just a test dialogue to show you an example of the documentation of an item entry",
+        "Since JSON doesn't have comments." 
+    ],
+
+    "item": [
+        "Duck:The duck has words to say.",
+        ":Quack. Quack."
+
+    ],
+    
+    "item2": [
+        "This is just to check that more dialogue works."
+
+    ]
+
+}
