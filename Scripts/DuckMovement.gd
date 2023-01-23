@@ -13,6 +13,7 @@ enum State {IDLE, WALK, INTERACT}
 var _state: int = State.IDLE
 func _ready():
 	screen_size = get_viewport_rect().size
+	SignalBus.connect("interact", self, "on_interact")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -57,9 +58,16 @@ func _process(delta):
 				$AnimatedSprite.animation = "up"
 			else:
 				$AnimatedSprite.animation = "down"
+	
+	elif _state == State.INTERACT:
+		$AnimatedSprite.animation = "idle"
 			
 
 
 
-func _end_interaction():
-	_state = State.IDLE
+func on_interact():
+	if _state != State.INTERACT:
+		_state = State.INTERACT
+	else:
+		_state = State.IDLE
+		

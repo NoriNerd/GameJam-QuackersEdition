@@ -17,6 +17,7 @@ onready var background = $Background
 onready var dialogue_text = get_node("DialogueText")
 onready var name_text = get_node("NameText")
 
+
 func _ready():
 	dialogue_text.text = ""
 	name_text.text = ""
@@ -68,7 +69,7 @@ func finish():
 	name_text.text = ""
 	background.visible = false
 	in_progress = false
-	#get_tree().paused = false
+	SignalBus.emit_signal("interact")
 	
 
 func on_display_dialogue(text_key):
@@ -77,7 +78,7 @@ func on_display_dialogue(text_key):
 	elif typing:
 		skip_line()
 	elif not in_progress:
-		#get_tree().paused = true #Pause scene tree loading
+		SignalBus.emit_signal("interact")
 		background.visible = true
 		in_progress = true
 		
