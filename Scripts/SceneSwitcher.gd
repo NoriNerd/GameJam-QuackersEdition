@@ -1,6 +1,6 @@
 extends Node
 
-onready var current_level = $TestWorld
+onready var current_level = $RealityWorld
 onready var anim = $AnimationPlayer
 
 var next_level = null
@@ -21,7 +21,7 @@ func handle_level_change(current_level_name: String):
 		"Test":
 			next_level_name = "Reality"
 		"Fantasy":
-			next_level_name = "Test"
+			next_level_name = "Reality"
 		
 		#Catch all
 		_:
