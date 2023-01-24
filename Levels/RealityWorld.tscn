@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/Level.gd" type="Script" id=1]
+[ext_resource path="res://Sounds/world_transition.wav" type="AudioStream" id=2]
+[ext_resource path="res://Characters/DuckPlayer.tscn" type="PackedScene" id=3]
+
+[node name="RealityWorld" type="Node2D"]
+script = ExtResource( 1 )
+level_name = "Reality"
+
+[node name="WorldSwitchSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+
+[node name="DuckPlayer" parent="." instance=ExtResource( 3 )]

@@ -64,10 +64,10 @@ func _process(delta):
 			
 
 
-
+#Freeze character when interacting
 func on_interact():
 	if _state != State.INTERACT:
 		_state = State.INTERACT
 	else:
 		_state = State.IDLE
-		
+
